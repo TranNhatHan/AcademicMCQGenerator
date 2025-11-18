@@ -3,3 +3,5 @@ requests
 transformers
 pymilvus
 azure-search-documents
+torch
+bitsandbytes
