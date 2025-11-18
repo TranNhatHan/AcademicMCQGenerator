@@ -2,3 +2,4 @@
 This is a legendary app that can do everything
 
 # Depedencies
+- bottle
