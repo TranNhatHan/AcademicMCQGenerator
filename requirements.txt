@@ -1,5 +1,0 @@
-bottle
-requests
-transformers
-pymilvus
-azure-search-documents
