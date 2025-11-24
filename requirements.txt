@@ -1,0 +1,6 @@
+bottle
+requests
+transformers
+pymilvus
+torch
+bitsandbytes
