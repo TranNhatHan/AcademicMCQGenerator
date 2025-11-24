@@ -1,0 +1,50 @@
+services:
+  weaviate:
+    command:
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --scheme
+      - http
+    image: cr.weaviate.io/semitechnologies/weaviate:latest
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    volumes:
+      - ./weaviate_data:/var/lib/weaviate
+    restart: on-failure:0
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
+      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+      CLUSTER_HOSTNAME: "node1"
+
+  api:
+    build: ./api
+    container_name: app_api
+    restart: always
+    depends_on:
+      - weaviate
+    environment:
+      WEAVIATE_URL: http://weaviate:8080
+      PYTHONUNBUFFERED: "1"
+    ports:
+      - "8000:8000"
+
+  web:
+    build: ./web  
+    container_name: angular_web
+    restart: always
+    depends_on:
+      - api
+      - weaviate
+    ports:
+      - "4200:80"
+    environment:
+      API_URL: http://api:8000
+      WEAVIATE_URL: http://weaviate:8080
+    volumes: []
+
+volumes:
+  weaviate_data:
